@@ -1,6 +1,7 @@
 #!/bin/bash
 
-scriptDir="`dirname "$0"`"
+source ~/.mapillary_scripts
+scriptDir="$MAPILLARY_ROOT"
 
 deg="$1"
 shift
@@ -16,7 +17,6 @@ then
   exit 1
 fi
 
-gpxfile='/home/tryl/Pictures/billeder/gpslog/SonyZ2/*.gpx'
 if [ "$1" != "" ]; then
   gpxfile="$1"
   if [ ! -f "$gpxfile" ]; then
@@ -47,7 +47,6 @@ fi
 
 if [ "$seqCount" = "0" ]; then
   echo "Sequence split"
-  # python "$scriptDir/mapillary_tools/python/time_split.py" . 120 | tee log-time-split.txt | tail -n5
   python "$scriptDir/mapillary_tools/python/sequence_split.py" . 120 100 | tee log-sequence-split.txt | tail -n5
 fi
 
@@ -66,13 +65,6 @@ do
   echo "Reverse geotag '$d'" >> log-reverse-geotagging.txt
   reverse-geotagging.sh "$d" "$d/track.gpx" 2>&1 | tee -a log-reverse-geotagging.txt | tail -n5
 done
-
-# generate-gpx-map.sh "$gpxfile"
-
-#find-mapillary-sequences.sh | while read d
-#do
-#  generate-gpx-map.sh "$d"
-#done
 
 echo "Done"
 echo "$deg degrees" > prepared.txt
