@@ -55,6 +55,9 @@ prepare.sh
 Runs the steps as described earlier. Takes two arguments:
 1. The direction relative to the movement the camera is pointting. E.g. 0 for forward facing, -180 or 180 for backward, -90 for full left facing, 45 for partial right etc.
 2. The path to a gpx file for geotagging the files.
+The script must be run inside the same folder as the .jpg files are located in.
+
+The script will perform detailed logging to files named log-*.txt. At the end of each task a short summary will be shown, consisting of usually the last 2-5 lines of output along with all lines that a not normal.
 
 remove-slow-shutters.sh
 -----------------------
@@ -81,8 +84,8 @@ Uploads all sequences that does not contain a file named 'log-upload.txt`. The s
 Todo
 ====
 In the current state the following needs to be done for the script to be easy to use for others:
-* prepare.sh and others requires mapillary_tools to be located in the same folder as the script.
 * Folders that contains the name garmin will not be geotagged - this should be a switch instead.
-* Scripts may require scripts which are only on my computer.
 * Split sequences and remove duplicates uses hard coded values.
 * Reverse geotagging should be optional.
+* Everyting should be tested with .mapillary_scripts.
+
