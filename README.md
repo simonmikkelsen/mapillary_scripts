@@ -33,11 +33,11 @@ gpx.fmt
 -------
 Used internally by `reverse-geotagging.sh`
 
-.mapillary_scripts
+.mapillary\_scripts
 ------------------
 Template that must be filled out and put in the users home directory (`~/`). This is the configuration file for the scripts.
 
-mapillary_upload.sh
+mapillary\_upload.sh
 -------------------
 Uploads a given sequence without asking for credentials.
 
@@ -57,7 +57,7 @@ Runs the steps as described earlier. Takes two arguments:
 2. The path to a gpx file for geotagging the files.
 The script must be run inside the same folder as the .jpg files are located in.
 
-The script will perform detailed logging to files named log-*.txt. At the end of each task a short summary will be shown, consisting of usually the last 2-5 lines of output along with all lines that a not normal.
+The script will perform detailed logging to files named log-\*.txt. At the end of each task a short summary will be shown, consisting of usually the last 2-5 lines of output along with all lines that a not normal.
 
 remove-slow-shutters.sh
 -----------------------
@@ -77,9 +77,9 @@ sleep-mapillary-upload.sh
 -------------------------
 Sleeps untill the currently running `mapillary-upload.sh` script has finished.
 
-upload_unfinished_seqnences.sh
+upload\_unfinished\_seqnences.sh
 ------------------------------
-Uploads all sequences that does not contain a file named 'log-upload.txt`. The script does not analyze the file (you are welcome to write that).
+Uploads all unfinished sequences. The scripts looks for the location and in the contens of the file named log-upload.txt in each sequence directory.
 
 Todo
 ====
@@ -87,5 +87,5 @@ In the current state the following needs to be done for the script to be easy to
 * Folders that contains the name garmin will not be geotagged - this should be a switch instead.
 * Split sequences and remove duplicates uses hard coded values.
 * Reverse geotagging should be optional.
-* Everyting should be tested with .mapillary_scripts.
+* Everyting should be tested with .mapillary\_scripts.
 

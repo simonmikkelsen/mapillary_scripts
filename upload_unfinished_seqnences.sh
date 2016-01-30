@@ -1,10 +1,19 @@
-#!/bin/sh
+#!/bin/bash
 
 find-mapillary-sequences.sh | while read d
 do
-  if [ ! -f $d/log-upload.txt ]
+  upload=no
+  if [ ! -f "$d/log-upload.txt" ]
   then
-    mapillary_upload.sh $d
+    upload=yes
+  elif ! grep -q 'Done uploading.' "$d/log-upload.txt"
+  then
+    upload=yes
+  fi
+
+  if [ $upload = yes ]
+  then
+    mapillary_upload.sh "$d"
   fi
 done
 

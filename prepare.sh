@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ~/.mapillary_scripts
+source "$HOME/.mapillary_scripts"
 scriptDir="$MAPILLARY_ROOT"
 
 deg="$1"
