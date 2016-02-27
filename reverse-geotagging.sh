@@ -25,8 +25,15 @@ if [[ "$inputDir" =~ garmin ]]; then
   globaltimeshift=-1
 fi
 
-#exiftool -r -if '$datetimeoriginal' -fileOrder datetimeoriginal -p "$gpxfmt" -d %Y-%m-%dT%H:%M:%SZ "$inputDir" > "$outfile"
+if [[ "$inputDir" =~ sony ]]; then
+  globaltimeshift=-1
+fi
+
+#if [[ "$inputDir" =~ sony ]]; then
+#  exiftool -globaltimeshift $globaltimeshift -ignoreMinorErrors -progress -r -if '$GPSDateTime' -if '$gpslongitude' -if '$gpslatitude' -fileOrder GPSDateTime -p "$gpxfmt" -d %Y-%m-%dT%H:%M:%SZ "$inputDir" > "$outfile"
+#else
 exiftool -globaltimeshift $globaltimeshift -ignoreMinorErrors -progress -r -if '$datetimeoriginal' -if '$gpslongitude' -if '$gpslatitude' -fileOrder datetimeoriginal -p "$gpxfmt" -d %Y-%m-%dT%H:%M:%SZ "$inputDir" > "$outfile"
+#fi
 
 
 

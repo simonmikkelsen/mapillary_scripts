@@ -33,6 +33,10 @@ gpx.fmt
 -------
 Used internally by `reverse-geotagging.sh`
 
+mapillary\_count.sh
+-------------------
+Prints the number of images located inside mapillary sequences.
+
 .mapillary\_scripts
 ------------------
 Template that must be filled out and put in the users home directory (`~/`). This is the configuration file for the scripts.
@@ -77,6 +81,13 @@ sleep-mapillary-upload.sh
 -------------------------
 Sleeps untill the currently running `mapillary-upload.sh` script has finished.
 
+undo-sequences.sh
+-----------------
+Must be run from the folder that contains sequences (no check is made for this, yet).
+Will move all images in sequences and a folder named duplicates into the current folder.
+A file named track.gpx in a sequence folder is deleted.
+Log files from `prepare.sh` are not handled (you are welcome to add support).
+
 upload\_unfinished\_seqnences.sh
 ------------------------------
 Uploads all unfinished sequences. The scripts looks for the location and in the contens of the file named log-upload.txt in each sequence directory.
@@ -88,4 +99,7 @@ In the current state the following needs to be done for the script to be easy to
 * Split sequences and remove duplicates uses hard coded values.
 * Reverse geotagging should be optional.
 * Everyting should be tested with .mapillary\_scripts.
+* `undo-sequences.sh` must only look at sequences in the current folder.
+* `undo-sequences.sh` must handle log files from `prepare.sh`.
+* `reverse-geotagging.sh` has hard coded time shift values.
 
