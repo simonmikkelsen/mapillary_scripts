@@ -54,6 +54,11 @@ mv-successfull-files.sh
 If upload is done using `prepare.sh` a file named log-upload.txt is produced. All files which are listed as uploaded in this log file will be moved to the given destination.
 Note: The script does not take into account if a sequence upload was aborted - only individual files that e.g. timed out.
 
+qiv-mapillary.sh
+----------------
+Finds all mapillary sequences and launches the `qiv` image viewer (must be installed separately).
+Finally `mv-removed.sh` is run, which moves images marked as deleted by `qiv` to a specific folder.
+
 prepare.sh
 ----------
 Runs the steps as described earlier. Takes two arguments:
