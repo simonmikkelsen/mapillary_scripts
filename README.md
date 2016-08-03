@@ -82,6 +82,11 @@ show-upload-status.sh
 ---------------------
 Finds all `log-upload.txt` files and presents a summary of how it is going.
 
+show-location.sh
+----------------
+Given a single image as argument, a browser is opened with an Open Street Map and a marker on the location.
+The image is also opened in the default image viewer.
+
 sleep-mapillary-upload.sh
 -------------------------
 Sleeps untill the currently running `mapillary-upload.sh` script has finished.
