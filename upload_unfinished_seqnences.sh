@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Potential uploads:"
+find-mapillary-sequences.sh
+
 find-mapillary-sequences.sh | while read d
 do
   upload=no
