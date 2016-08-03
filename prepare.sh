@@ -2,9 +2,30 @@
 
 source "$HOME/.mapillary_scripts"
 scriptDir="$MAPILLARY_ROOT"
+timeshiftfile=timeshift.txt
 
 deg="$1"
 shift
+
+skipDirection=false
+if [ "$1" = "--skip-direction" ]; then
+  skipDirection=true
+  shift
+fi
+
+skipDuplicates=false
+if [  "$1" = "--skip-duplicates" ]; then
+  skipDuplicates=true
+  shift
+fi
+
+timeshift=0
+if [ "$1" = "--timeshift" ]; then
+  shift
+  timeshift="$1"
+  shift
+fi
+
 if [ "$deg" = "" -o "$deg" = "-h" ]
 then
   echo "Usage: $0 offset_degrees [gpxfile]"
@@ -17,6 +38,7 @@ then
   exit 1
 fi
 
+gpxfile=""
 if [ "$1" != "" ]; then
   gpxfile="$1"
   if [ ! -f "$gpxfile" ]; then
@@ -34,30 +56,39 @@ if [ "$seqCount" = "0" ]; then
   grep -v ' -> ' log-flatten-folder.txt
 fi
 
-if [[ ! "$PWD" =~ "/garmin" ]]; then
+if [ "$gpxfile" != "" ]; then
   echo "Geotag"
-  exiftool -ignoreMinorErrors -overwrite_original -geotag "$gpxfile" . 2>&1 | tee log-geotag.txt | tail -n10
+  if  [ -f  "$timeshiftfile" ]; then
+    # Handle timeshift. If first timestamp in the gpx file is e.g. 8:00 and the first images is stamped 9.00,
+    # the timeshift.txt must contain only a 1. In the reverse case -1 can be used.
+    timeshift="`cat "$timeshiftfile"`"
+  fi
+  exiftool -ignoreMinorErrors -overwrite_original -globaltimeshift "$timeshift" -geotag "$gpxfile" . 2>&1 | tee log-geotag.txt | tail -n10
   
-  echo "Interpolate direction"
-  python "$scriptDir/mapillary_tools/python/interpolate_direction.py" . $deg  | tee log-interpolate-direction.txt | tail -n5
+  if [ $skipDirection != true ]; then
+    echo "Interpolate direction"
+    python "$scriptDir/mapillary_tools/python/interpolate_direction.py" . $deg  | tee log-interpolate-direction.txt | tail -n5
 
-  # Should output nothing.
-  grep -v 'Added direction to:' log-interpolate-direction.txt
+    # Should output nothing.
+    grep -v 'Added direction to:' log-interpolate-direction.txt
+  fi
 fi
 
 if [ "$seqCount" = "0" ]; then
   echo "Sequence split"
-  python "$scriptDir/mapillary_tools/python/sequence_split.py" . 120 100 | tee log-sequence-split.txt | tail -n5
+  python "$scriptDir/mapillary_tools/python/sequence_split.py" . 120 300 | tee log-sequence-split.txt | tail -n5
 fi
 
-echo "Remove duplicates"
-find-mapillary-sequences.sh | while read d
-do
-  python "$scriptDir/mapillary_tools/python/remove_duplicates.py" -d 1.7 "$d/" | tee -a log-remove-duplicates.txt | tail -n2
-done
-# Should output nothing.
-grep -v ' => ' log-remove-duplicates.txt 
-echo "Duplicates: `grep ' => ' log-remove-duplicates.txt | wc -l` of total `find -iname '*.jpg' | wc -l` images."
+if [ $skipDuplicates != true ]; then
+  echo "Remove duplicates"
+  find-mapillary-sequences.sh | while read d
+  do
+    python "$scriptDir/mapillary_tools/python/remove_duplicates.py" -d 1.7 "$d/" | tee -a log-remove-duplicates.txt | tail -n2
+  done
+  # Should output nothing.
+  grep -v ' => ' log-remove-duplicates.txt 
+  echo "Duplicates: `grep ' => ' log-remove-duplicates.txt | wc -l` of total `find -iname '*.jpg' | wc -l` images."
+fi
 
 echo "Create gpx for each sequence"
 find-mapillary-sequences.sh | while read d
