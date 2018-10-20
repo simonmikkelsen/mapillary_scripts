@@ -16,3 +16,5 @@ then
   rmdir duplicates
 fi
 
+rm -v log-geotag.txt log-interpolate-direction.txt log-remove-duplicates.txt log-reverse-geotagging.txt log-sequence-split.txt prepared.txt
+
