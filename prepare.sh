@@ -63,11 +63,23 @@ if [ "$gpxfile" != "" ]; then
     # the timeshift.txt must contain only a 1. In the reverse case -1 can be used.
     timeshift="`cat "$timeshiftfile"`"
   fi
-  exiftool -ignoreMinorErrors -overwrite_original -globaltimeshift "$timeshift" -geotag "$gpxfile" . 2>&1 | tee log-geotag.txt | tail -n10
+  timeoffset=""
+  timeoffsetfile=timeoffset.txt
+  if [ -f "$timeoffsetfile" ]; then
+    #timeoffset="--time-offset `cat "$timeoffsetfile"`"
+    echo Skip timeoffset
+  fi
+  # If timeoffset file is specified use the Mapillary script. If not, use exiftool for backward compatibillity..
+  if [ -n "$timeoffset" ]; then
+    python "$scriptDir/mapillary_tools/python/geotag_from_gpx.py" $timeoffset . "$gpxfile"
+   else
+    #exiftool -ignoreMinorErrors -overwrite_original -globaltimeshift "$timeshift" -geosync="$timeshift" -geotag "$gpxfile" . 2>&1 | tee log-geotag.txt | tail -n10
+    exiftool -ignoreMinorErrors -overwrite_original "-Geotime<DateTimeOriginal#" -geosync="$timeshift" -geotag "$gpxfile" . 2>&1 | tee log-geotag.txt | tail -n10
+  fi
   
   if [ $skipDirection != true ]; then
     echo "Interpolate direction"
-    python "$scriptDir/mapillary_tools/python/interpolate_direction.py" . $deg  | tee log-interpolate-direction.txt | tail -n5
+    python "$scriptDir/mapillary_tools/python/interpolate_direction.py" . $deg  | tee log-interpolate-direction.txt | tail -n5 2>&1 | tee log-geotag.txt | tail -n10
 
     # Should output nothing.
     grep -v 'Added direction to:' log-interpolate-direction.txt
