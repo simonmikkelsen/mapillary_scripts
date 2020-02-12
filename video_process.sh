@@ -2,6 +2,7 @@
 
 if [ "$1" = "-h" -o "$1" = "--help" ]; then
   echo "Usage: $0 [-h] gpxfile [angle]"
+  echo "WARNING: A username is hard coded in this script. It must be changed or the upload will fail!"
   exit 0
 fi
 

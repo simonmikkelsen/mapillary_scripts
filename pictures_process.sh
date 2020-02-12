@@ -1,8 +1,15 @@
 #!/bin/sh
 
 if [ "$1" = "-h" -o "$1" = "--help" ]; then
-  echo "Usage: $0 [-h] gpxfile [angle][offset]"
-  echo "       Specify . instead of gpxfile to not geotag."
+  echo "Usage: $0 [-h] gpxfile [angle][time offset sec]"
+  echo
+  echo "gpxfile Mandatory. Specify . instead of gpxfile to not geotag."
+  echo "angle   the angle in degress to which the camera is pointing. Defaults to 0 if not specified."
+  echo "time offset sec  if images are not taken in the current time zone and daylight savings time specify the offset to UTC in seconds."
+  echo "                  e.g. if taken in UTC+2 with DST in effect, but the command is run with DST not in effect, i.e. UTC+1"
+  echo "                  specify 7200 for 2 hours (2 * 60 * 60)."
+  echo "WARNING: A username is hard coded inside this script. This must be altered before use or upload will fail!"
+  echo 
   exit 0
 fi
 

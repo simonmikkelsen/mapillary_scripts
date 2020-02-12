@@ -19,12 +19,11 @@ The main script, `prepare.sh`, will do the following:
 
 Scripts
 =======
-Detailed description of the scripts. They can be run without arguments or `-h `to see what arguments they require.
+Detailed description of the scripts. They can some times be run without arguments or `-h `to see what arguments they require.
 
-find-mapillary-sequences.sh
----------------------------
-Finds all folders named only with 1-3 numbers, which is the format the sequence splitter script uses.
-
+old
+---
+Folder with script that are outdated, usually for an older Mapillary API.
 flatten-folder.sh
 -----------------
 Renames files in sub folders, so all files are in a single structure. If a files path is `FOLDER_001/FILE_001.jpg` it will be named `FOLDER_001_FILE_001.jpg`.
@@ -33,40 +32,9 @@ gpx.fmt
 -------
 Used internally by `reverse-geotagging.sh`
 
-mapillary\_count.sh
--------------------
-Prints the number of images located inside mapillary sequences.
-
-.mapillary\_scripts
-------------------
-Template that must be filled out and put in the users home directory (`~/`). This is the configuration file for the scripts.
-
-mapillary\_upload.sh
--------------------
-Uploads a given sequence without asking for credentials.
-
 mv-removed.sh
 -------------
 Finds all folders named `.qiv-trash` (created by the Quick Image Viewer qiv) and puts their contents in a folder named `removed`.
-
-mv-successfull-files.sh
------------------------
-If upload is done using `prepare.sh` a file named log-upload.txt is produced. All files which are listed as uploaded in this log file will be moved to the given destination.
-Note: The script does not take into account if a sequence upload was aborted - only individual files that e.g. timed out.
-
-qiv-mapillary.sh
-----------------
-Finds all mapillary sequences and launches the `qiv` image viewer (must be installed separately).
-Finally `mv-removed.sh` is run, which moves images marked as deleted by `qiv` to a specific folder.
-
-prepare.sh
-----------
-Runs the steps as described earlier. Takes two arguments:
-1. The direction relative to the movement the camera is pointting. E.g. 0 for forward facing, -180 or 180 for backward, -90 for full left facing, 45 for partial right etc.
-2. The path to a gpx file for geotagging the files.
-The script must be run inside the same folder as the .jpg files are located in.
-
-The script will perform detailed logging to files named log-\*.txt. At the end of each task a short summary will be shown, consisting of usually the last 2-5 lines of output along with all lines that a not normal.
 
 remove-slow-shutters.sh
 -----------------------
@@ -78,38 +46,25 @@ reverse-geotagging.sh
 ---------------------
 Creates a gpx file from a folder of geotagged images. In this way you can geotag cameras with the location data created by another camera.
 
-show-upload-status.sh
----------------------
-Finds all `log-upload.txt` files and presents a summary of how it is going.
-
 show-location.sh
 ----------------
 Given a single image as argument, a browser is opened with an Open Street Map and a marker on the location.
 The image is also opened in the default image viewer.
 
-sleep-mapillary-upload.sh
--------------------------
-Sleeps untill the currently running `mapillary-upload.sh` script has finished.
+TODO
+----
+Add proper help switch to new scripts.
 
-undo-sequences.sh
+pictures_process.sh
+-------------------
+Runs Mapillary preprocessing on all images in the specified path. Run with -h to read the help with arguments.
+
+picture_upload.sh
 -----------------
-Must be run from the folder that contains sequences (no check is made for this, yet).
-Will move all images in sequences and a folder named duplicates into the current folder.
-A file named track.gpx in a sequence folder is deleted.
-Log files from `prepare.sh` are not handled (you are welcome to add support).
+Uploads the images in the specified folder. Specify . to upload images in the current folder.
 
-upload\_unfinished\_seqnences.sh
-------------------------------
-Uploads all unfinished sequences. The scripts looks for the location and in the contens of the file named log-upload.txt in each sequence directory.
-
-Todo
-====
-In the current state the following needs to be done for the script to be easy to use for others:
-* Folders that contains the name garmin will not be geotagged - this should be a switch instead.
-* Split sequences and remove duplicates uses hard coded values.
-* Reverse geotagging should be optional.
-* Everyting should be tested with .mapillary\_scripts.
-* `undo-sequences.sh` must only look at sequences in the current folder.
-* `undo-sequences.sh` must handle log files from `prepare.sh`.
-* `reverse-geotagging.sh` has hard coded time shift values.
+video_process.sh
+----------------
+Runs processing for a set of video files turning them into images that can be uploaded.
+Run it with -h to see help.
 
