@@ -8,15 +8,6 @@ These scripts are shell scripts, that must be run by a shell like Bash.
 Windows users can use cygwin.
 You must additionally install exiftool.
 
-What is done
-============
-The main script, `prepare.sh`, will do the following:
-* Flatten all folders, in the case a sequence spans multiple folders.
-* Optionally perform geotagging.
-* Split images into sequences.
-* Remove duplicates.
-* Do reverse geotagging of each sequencef or quality assurance.
-
 Scripts
 =======
 Detailed description of the scripts. They can some times be run without arguments or `-h `to see what arguments they require.
@@ -24,6 +15,20 @@ Detailed description of the scripts. They can some times be run without argument
 old
 ---
 Folder with script that are outdated, usually for an older Mapillary API.
+
+pictures_process.sh
+-------------------
+Runs Mapillary preprocessing on all images in the specified path. Run with -h to read the help with arguments.
+
+picture_upload.sh
+-----------------
+Uploads the images in the specified folder. Specify . to upload images in the current folder.
+
+video_process.sh
+----------------
+Runs processing for a set of video files turning them into images that can be uploaded.
+Run it with -h to see help.
+
 flatten-folder.sh
 -----------------
 Renames files in sub folders, so all files are in a single structure. If a files path is `FOLDER_001/FILE_001.jpg` it will be named `FOLDER_001_FILE_001.jpg`.
@@ -54,17 +59,4 @@ The image is also opened in the default image viewer.
 TODO
 ----
 Add proper help switch to new scripts.
-
-pictures_process.sh
--------------------
-Runs Mapillary preprocessing on all images in the specified path. Run with -h to read the help with arguments.
-
-picture_upload.sh
------------------
-Uploads the images in the specified folder. Specify . to upload images in the current folder.
-
-video_process.sh
-----------------
-Runs processing for a set of video files turning them into images that can be uploaded.
-Run it with -h to see help.
 
